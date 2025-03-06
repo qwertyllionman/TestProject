@@ -25,3 +25,19 @@ async def get_student(student_id:int):
 @app.get("/students/", status_code=status.HTTP_200_OK)
 async def get_all_students():
     return students
+
+@app.post("/tests/", status_code=status.HTTP_201_CREATED)
+async def create_test(test:Test):
+    tests.append(test)
+    return {"message" : "Test created successfully!"}
+
+@app.get("/tests/{test_id}/", status_code=status.HTTP_200_OK)
+async def get_test(test_id:int):
+    for test in tests:
+        if test.id == test_id:
+            return test
+    raise HTTPException(status_code=404, detail="Test is not found!")
+
+@app.get("/tests/", status_code=status.HTTP_200_OK)
+async def get_all_tests():
+    return tests
