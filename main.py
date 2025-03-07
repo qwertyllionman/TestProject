@@ -41,3 +41,28 @@ async def get_test(test_id:int):
 @app.get("/tests/", status_code=status.HTTP_200_OK)
 async def get_all_tests():
     return tests
+
+@app.post('/results/', status_code=status.HTTP_201_CREATED)
+async def submit_test(submission:TestResult):
+    results.append(submission)
+    return {"message":"Test result is submitted successfully"}
+
+@app.get('/results/student/{student_id}/', status_code=status.HTTP_200_OK)
+async def get_test_for_student(student_id:int):
+    res = []
+    for result in results:
+        if result.student_id == student_id:
+            res.append(result)
+    if res:
+        return res
+    raise HTTPException(status_code=404, detail="Student results not found!")
+
+@app.get('/results/test/{test_id}/', status_code=status.HTTP_200_OK)
+async def get_result_for_test(test_id:int):
+    res = []
+    for result in results:
+        if result.test_id == test_id:
+            res.append(result)
+    if res:
+        return res
+    raise HTTPException(status_code=404, detail="Test results not found!")
